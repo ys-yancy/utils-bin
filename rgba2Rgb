@@ -1,0 +1,40 @@
+#! /usr/bin/env node
+
+const isRGBA = (colorCssString) => {
+  return colorCssString.match(/rgba/gi);
+}
+
+
+const convertRGBAtoRGBIfNeeded = (colorCssString) => {
+  if (!isRGBA(colorCssString)) {
+    return colorCssString;
+  }
+
+  const colorArray = colorCssString.match(/\d+\.*\d*/g);
+  const source = {
+    R: colorArray.shift() / 255,
+    G: colorArray.shift() / 255,
+    B: colorArray.shift() / 255,
+    A: colorArray.shift() / 1,
+  };
+  const bgColor = {
+    R: 1,
+    G: 1,
+    B: 1
+  };
+
+  // Credits to:
+  // https://stackoverflow.com/questions/2049230/convert-rgba-color-to-rgb
+
+  const target = {
+    R: parseInt(255 * (((1 - source.A) * bgColor.R) + (source.A * source.R))),
+    G: parseInt(255 * (((1 - source.A) * bgColor.G) + (source.A * source.G))),
+    B: parseInt(255 * (((1 - source.A) * bgColor.B) + (source.A * source.B))),
+  }
+  const rgbColor = `rgb(${target.R}, ${target.G}, ${target.B})`  
+  
+  return rgbColor;
+}
+
+const inputValue = process.argv[process.argv.length - 1];
+console.log(inputValue, ': ', convertRGBAtoRGBIfNeeded(inputValue));
