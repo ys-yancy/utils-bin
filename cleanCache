@@ -1,0 +1,28 @@
+#! /usr/bin/env bash
+
+component_dir='/Users/yangshuai/workspace/beisen/pps-components/';
+questionnaire_monorepo_dir='/Users/yangshuai/workspace/beisen/pps-components/questionnaire/src/components/';
+
+components=`ls $component_dir`;
+questionnaire_components=`ls $questionnaire_monorepo_dir`;
+
+
+cleanCache () {
+  cache_path="${1}${2}/node_modules/.cache"
+  if [ -d "$cache_path" ]; then
+    rm -rf $cache_path
+  fi
+}
+
+echo 'start delete'
+for component in $components
+do
+  cleanCache ${component_dir} ${component}
+done
+
+for component in $questionnaire_components
+do
+  cleanCache ${questionnaire_monorepo_dir} ${component}
+done
+
+echo "delete success！";
