@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# 删除路由
+networksetup -setadditionalroutes FSVPN
